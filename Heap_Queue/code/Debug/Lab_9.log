@@ -1,0 +1,5 @@
+﻿  Q2.cpp
+C:\Users\henny\OneDrive\桌面\C++\Lab_9\Lab_9\Q2.cpp(14,27): warning C4018: '<': signed/unsigned mismatch
+C:\Users\henny\OneDrive\桌面\C++\Lab_9\Lab_9\Q2.cpp(89,15): warning C4018: '<=': signed/unsigned mismatch
+C:\Users\henny\OneDrive\桌面\C++\Lab_9\Lab_9\Q2.cpp(93,15): warning C4018: '<=': signed/unsigned mismatch
+  Lab_9.vcxproj -> C:\Users\henny\OneDrive\桌面\C++\Lab_9\Debug\Lab_9.exe
