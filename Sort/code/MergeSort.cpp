@@ -2,82 +2,75 @@
 #include <vector>
 using namespace std;
 
-void dfs(vector<vector<int>>& universe, int i, int j, int& area) {
-    //Hint : Use DFS here to calculate the area of every planet.
-    if (i < 0 || j < 0 || i >= universe.size() || j >= universe[0].size() || universe[i][j] == 0) {
-        return;
+void merge(vector<int>& v, int front, int mid, int end) {
+    int leftSize = mid - front + 1;
+    int rightSize = end - mid;
+
+    int* left_v = new int[leftSize];
+    int* right_v = new int[rightSize];
+
+    for (int i = 0; i < leftSize; i++) {
+        left_v[i] = v[i + front];
     }
-    universe[i][j] = 0; 
-    area++;
-    dfs(universe, i + 1, j, area);
-    dfs(universe, i - 1, j, area);
-    dfs(universe, i, j + 1, area);
-    dfs(universe, i, j - 1, area);
+    for (int j = 0; j < rightSize; j++) {
+        right_v[j] = v[mid + 1 + j];
+    }
 
-}
+    int i = 0, j = 0, k = front;
 
-int partition(vector<int>& v, int front, int end) {
-    //TO-DO
-   
-    int pivot = v[end];
-        
-    int i = front - 1;
-    for (int j = front; j < end; j++) {
-        if (v[j] < pivot) {
+    while (i < leftSize && j < rightSize) {
+        if (left_v[i] <= right_v[j]) {
+            v[k] = left_v[i];
             i++;
-            int temp = v[i];
-            v[i] = v[j];
-            v[j] = temp;
         }
+        else {
+            v[k] = right_v[j];
+            j++;
+        }
+        k++;
     }
-    i++;
-    int temp = v[i];
-    v[i] = v[end];
-    v[end] = temp;
-    
-    return i;
+
+    while (i < leftSize) {
+        v[k] = left_v[i];
+        i++;
+        k++;
+    }
+
+    while (j < rightSize) {
+        v[k] = right_v[j];
+        j++;
+        k++;
+    }
+
+    delete[] left_v;
+    delete[] right_v;
 }
 
-void quickSort(vector<int>& v, int front, int end) {
+
+void mergeSort(vector<int>& v, int front, int end) {
     //TO-DO
     if (front < end) {
-        int pivot = partition(v, front, end);
-        quickSort(v, front, pivot - 1);
-        quickSort(v, pivot + 1, end);
+        int mid = (front + end) / 2;
+        mergeSort(v, front, mid);
+        mergeSort(v, mid + 1, end);
+        merge(v, front, mid, end);
     }
 
 }
 
 int main() {
-    int m, n; //m,n represent the size of the universe.
-    int res = 0; //res is the number of planets in the universe.
-    vector<int> collectingArea; //collectingArea is used to collect the area of every planet.
-    cin >> m >> n;
-    vector<vector<int>> universe(m, vector<int>(n, 0));
-    for (int i = 0; i < m; i++) {
-        for (int j = 0; j < n; j++) {
-            cin >> universe[i][j];
-        }
+    int n;
+    cin >> n;
+    vector<int> arr(n);
+    for (int i = 0; i < n; i++) {
+        cin >> arr[i];
     }
 
     //TO-DO
-    for (int i = 0; i < m; i++) {
-        for (int j = 0; j < n; j++) {
-            if (universe[i][j] == 1) {
-                int area = 0;
-                dfs(universe, i, j, area);
-                collectingArea.push_back(area);
-                res++;
-            }
-        }
-    }
-    
-    //TO-DO : Use the quickSort function you wrote to sort the vector collectingArea.
-    quickSort(collectingArea, 0, res-1);
+    mergeSort(arr, 0, n-1);
 
-    cout << "The total number of planets is : " << res << endl;
-    cout << "The areas of the planets in non-decreasing order are : ";
-    for (int area : collectingArea) {
-        cout << area << " ";
+    for (int num : arr) {
+        cout << num << " ";
     }
+    return 0;
 }
